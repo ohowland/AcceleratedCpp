@@ -1,0 +1,17 @@
+this is a list of urls, with comments:
+http://google.com
+
+here's the first half:
+https://
+
+here's the second half:
+://google.com
+
+here is a different type:
+smb://myfilesystem/
+
+with invalid characters one:
+!#^)($*ftp://sustainablepowersystems.com#(@!_&$!&_fdsakh
+
+one more valid one:
+http://sustainablepowersystems.com

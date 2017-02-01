@@ -1,0 +1,14 @@
+9-2
+Q: If we define the name function as a plain nonconst member function, what other
+functions in our system must change and why?
+
+A: from book: Because the function gaurantees that it will not change the values
+in the object, we can call it for const objects. By the same token, we cannot
+call nonconst functions on const objects.
+
+So we're looking for functions calling -> const Student_info& 's' <- that have 
+s.name() uses.
+
+compare() would need to change. That's it, test compile throws that flag as well.
+
+

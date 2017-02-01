@@ -1,0 +1,25 @@
+Ex 6:
+what can we say about x?
+
+Copy(m.begin(), m.end(), back_inserter(x))
+copy(b, e, d), d is an output iterator appends by calling x.push_back(value)
+
+x would need to be an associative container holding pairs<int, string>/
+
+what about:
+copy(x.begin(), x.end(), back_inserter(m))
+
+x would need to be a pair<int, string>
+
+
+Ex 7:
+The comparison requiress that the types are exactly the same.
+
+Ex 8
+Begin and End are iterators (act like sequential pointers).
+Let begin = 1000
+    end = 1020
+    
+(begin - end)/2 = 10
+
+begin + (begin - end) / 2 = 1010 (the correct iterator address)

@@ -1,0 +1,27 @@
+<noun> Pete
+<noun> dildacon
+<noun> bulldog
+<noun> cactus
+<noun> Kate
+<noun> coat-hanger
+<noun> Champion
+<noun-phrase> <noun>
+<noun-phrase> <adjective> <noun-phrase>
+<adjective> sweaty
+<adjective> obease
+<adjective> donkyish
+<adjective> crisp
+<adjective> haughty
+<adjective> moldy
+<verb> launches
+<verb> jack hammers
+<verb> drifts
+<verb> humps
+<verb> dangles
+<verb> karate-chops
+<location> ottsville
+<location> berthoud church
+<location> lombardy drive
+<location> the sps lab
+<location> ozo coffee
+<sentence> the <noun-phrase> <verb> <location>
