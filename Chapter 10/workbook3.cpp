@@ -1,10 +1,15 @@
 #include <cstddef>
 #include <iostream>
+#include <algorithm>
+#include <string>
+
+using std::string;
+using std::copy;
 
 //size_t is an unsigned integer type that is
 // appropriate to contain the size of any array.
 
-size_t strlen_2(const char* p)
+size_t strlen(const char* p)
 {
 	size_t size = 0;
 	while (*p++ != '\0')
@@ -12,7 +17,7 @@ size_t strlen_2(const char* p)
 	return size;
 }
 
-string letter_grade(double grades)
+string letter_grade(double grade)
 {
 	// static tells the compiler to initalize
 	// the arrays one time only. without static
@@ -47,11 +52,12 @@ string letter_grade(double grades)
 // example of bad pointer.
 // x is a local variable, the memory containing it
 // will be released at the end of the function block.
-int* invalid_pointer()
+/* int* invalid_pointer()
 {
 	int x;
 	return &x; //instant disaster.
 }
+*/
 
 // is legit
 int* pointer_to_static()
@@ -79,6 +85,7 @@ char* duplicate_chars(const char* p)
 	// copy into our newly allocated aoace and return point to first elem.
 	copy(p, p + length, result);
 	return result;
+}
 
 int main()
 {
