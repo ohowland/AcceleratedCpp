@@ -1,0 +1,8 @@
+11-3 What does the synthesized assignment operator for Student_info objects do?:
+It appears to make a copy of the first object. This copy is independent, and we can
+change the values of the first without influencing the data help in the second.
+
+11-4 How many members does the synthesized Student_info destructor destroy?
+It looks like it destroy's all of them.
+
+11-5
