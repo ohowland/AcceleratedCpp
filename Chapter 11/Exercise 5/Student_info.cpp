@@ -1,32 +1,23 @@
-#include <string>
-#include <vector>
-#include <iostream>
 #include "Student_info.h"
-#include "grade.h"
 
-using std::istream;				using std::vector;
-
-Student_info::Student_info(): midterm(0), final(0) { ;}
-Student_info::Student_info(istream& is) { read(is); }
-
-void print(const std::string& s)
+void Student_info::print(const std::string& s)
 {
     std::cout << s << std::endl;
 }
 
 bool compare(const Student_info& x, const Student_info& y)
 {
-	return x.name() < y.name();
+	return x.name < y.name;
 }
 
-istream& Student_info::read(istream& in)
+std::istream& read(std::istream& in, Student_info& s)
 {
-	in >> n >> midterm >> final;
-	read_hw(in, homework);
+	in >> s.name >> s.midterm >> s.final;
+	read_hw(in, s.homework);
 	return in;
 }
 
-istream& read_hw(istream& in, vector<double>& hw)
+std::istream& read_hw(std::istream& in, std::vector<double>& hw)
 {
 	if (in) {
 		hw.clear();
@@ -39,9 +30,4 @@ istream& read_hw(istream& in, vector<double>& hw)
 	}
 
 	return in;
-}
-
-double Student_info::grade() const
-{
-	return ::grade(midterm, final, homework);
 }

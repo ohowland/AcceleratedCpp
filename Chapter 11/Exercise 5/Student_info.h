@@ -3,34 +3,47 @@
 
 #include <string>
 #include <vector>
-#include <istream>
+#include <iostream>
 
 class Student_info {
 public:
 	// constructors
-	Student_info() { print("create") }; // the 'default constructor' 
-	Student_info(std::istream&); // initalized s2 by reading from cin
-	
-	// interface goes here
-	std::istream& read(std::istream&);
-	double grade() const;
-	
-	// this accessor is a member function defined 
-	// as part of the class definition.
-	// we're telling compiler that it hsould avoid function-call overhead
-	// and expand calls to the function inline if possible
-	std::string name() const { return n; }
-	bool valid() const { return !homework.empty(); }
+	Student_info() { print("create"); }  
+    
+    // copy constructor
+    Student_info(const Student_info& other) {
+        print("copy");
+        clone(other);
+    }
+
+    // assignment operator
+    Student_info& operator=(const Student_info& other) {
+        print("assign");
+        if (this != &other)
+            clone(other);
+        return *this;
+    }
+
+    // destructor
+    ~Student_info() { print("destroy"); }
+
+	// API 
+    std::string name;
+    double midterm, final;
+    std::vector<double> homework;
 
 private:
 	// implementation goes here
     void print(const std::string&);
-	std::string n;
-	double midterm, final;
-	std::vector<double> homework;
+	void clone(const Student_info& other) {
+        name = other.name;
+        midterm = other.midterm;
+        final = other.final;
+        homework = other.homework;
+    }
 };
 
 bool compare(const Student_info&, const Student_info&);
 std::istream& read_hw(std::istream&, std::vector<double>&);
-
+std::istream& read(std::istream&, Student_info&);
 #endif
