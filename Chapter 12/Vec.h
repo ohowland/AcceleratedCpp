@@ -1,4 +1,9 @@
+#ifndef GUARD_VEC_H_
+#define GUARD_VEC_H_
+
 #include <memory>
+#include <algorithm>
+#include <cstddef>
 
 template <class T> class Vec {
 public:
@@ -15,7 +20,7 @@ public:
 	// destructor, copy, assignment.
 	
 	Vec() { create(); } // constructor T::T()
-	explicit Vec(std::size_t n, const T& val = T()) { create(n, t); }
+	explicit Vec(std::size_t n, const T& t = T()) { create(n, t); }
 	Vec(const Vec& v) { create(v.begin(), v.end()); } // copy constructor T::T(const T&)
 	Vec& operator=(const Vec&); // assignment operator T::operator=(const T&)
 	~Vec() { uncreate(); } // destructor T::~T(V)
@@ -23,10 +28,11 @@ public:
 	T& operator[] (size_type i) { return data[i]; }
 	const T& operator[] (size_type i) const { return data[i]; }
 
-	void push_back(const T& val) {
+	void push_back(const T& t) {
 		if (avail == limit) // get space if needed
 			grow();
-		unchecked_append(val); // append the new element
+		unchecked_append(t); // append the new element
+	}
 	
 	size_type size() const { return avail - data; }
 
@@ -36,6 +42,18 @@ public:
 	iterator end() { return avail; }
 	const_iterator end() const { return avail; }
 
+    iterator erase(iterator pos) {
+        for(iterator iter = pos; iter != avail; ++iter) {
+           alloc.destroy(iter); // Destroys the element object pointed to without deallocating its storage.
+           if ((iter + 1) != avail)
+               alloc.construct(iter, *(iter + 1)); // at pointer constructs arguments
+        }
+        avail--;
+        return pos;
+    }
+
+    void clear() { uncreate(); }
+
 private:
 	//implementation
 	iterator data; 	// first element in Vec
@@ -43,7 +61,7 @@ private:
 	iterator limit;	// one past the last available element
 
 	// facilities for memory allocation
-	allocator<T> alloc;
+	std::allocator<T> alloc;
 
 	// allocate and initalize the underlying array
 	void create();
@@ -69,14 +87,14 @@ void Vec<T>::create(size_type n, const T& val)
 {
 	data = alloc.allocate(n);
 	limit = avail = data + n;
-	uninitalized_fill(data, limit, val);
+	std::uninitialized_fill(data, limit, val);
 }
 
 template <class T>
 void Vec<T>::create(const_iterator i, const_iterator j)
 {
 	data = alloc.allocate(j - i);
-	limit = avail = uninitalized_copy(i, j, data);
+	limit = avail = std::uninitialized_copy(i, j, data);
 }
 
 template <class T>
@@ -99,11 +117,11 @@ template <class T>
 void Vec<T>::grow()
 {
 	// when growing, allocate twice as much space as currently in use
-	size_type new_size = max(2 * (limit - data), ptrdiff_t(1));
+	size_type new_size = std::max(2 * (limit - data), ptrdiff_t(1));
 
 	// allocate new space and copy existing elements to the new space
 	iterator new_data = alloc.allocate(new_size);
-	iterator new_avail = uninitalized_copy(data, avail, new_data);
+	iterator new_avail = std::uninitialized_copy(data, avail, new_data);
 
 	// return the old space
 	uncreate();
@@ -116,9 +134,9 @@ void Vec<T>::grow()
 
 // assumes avail points to allocated, but unintialized space
 template <class T>
-void Vec<T>::unchecked_append(const T& val)
+void Vec<T>::unchecked_append(const T& t)
 {
-	alloc.construct(avail++, val);
+	alloc.construct(avail++, t);
 }
 
 template <class T>
@@ -134,3 +152,5 @@ Vec<T>& Vec<T>::operator=(const Vec& rhs)
 	}
 	return *this;
 }
+
+#endif
