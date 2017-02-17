@@ -1,7 +1,6 @@
 #ifndef GUARD_STR_H_
 #define GUARD_STR_H_
 
-#include "Vec.h"
 #include <cctype>
 #include <cstring>
 #include <iostream>
@@ -17,27 +16,43 @@ public:
         return *this;
     }
     
-    typedef Vec<char>::size_type size_type;
+    typedef size_t size_type;
 
-    // Default Constructor
-    Str() { } 
+    /* Default Constructor */
+    Str() { create(); } 
     
-    // Construct Str containing n copies of c
-    Str(size_type n, char c): data(n, c) { }
+    /* Construct Str containing n copies of c */
+    // Str(size_type n, char c) { }
     
-    // Construct Str from null-terminated array of char
-    Str(const char* cp) { std::copy(cp, cp + std::strlen(cp), std::back_inserter(data)); }
+    /* Construct Str from null-terminated array of char */
+    // Str(const char* cp) { std::copy(cp, cp + std::strlen(cp), std::back_inserter(data)); }
     
-    // Construct Str from the range denoted by iterators
-    template <class In>
-    Str(In b, In e) { std::copy(b, e, std::back_inserter(data)); }
+    /* Construct Str from the range denoted by iterators */
+    // template <class In>
+    // Str(In b, In e) { std::copy(b, e, std::back_inserter(data)); }
+
+    /* Copy Constructor */
+    Str(const Str& a) { create(a.data, a.len); }
+
+    /* Assignment Operator */
+    Str& operator=(const Str&);
+
+    /* Destructor */
+    ~Str() { uncreate(); };
+
+    /* from vec:
+	Vec(const Vec& v) { create(v.begin(), v.end()); } // copy constructor T::T(const T&)
+	Vec& operator=(const Vec&); // assignment operator T::operator=(const T&)
+	~Vec() { uncreate(); } // destructor T::~T(V)
+    */
 
     char& operator[](size_type i) { return data[i]; }
     const char& operator[](size_type i) const { return data[i]; }
-    size_type size() const { return data.size(); }
+    size_type size() const { return len; }
 
 private:
-    Vec<char> data;
+    char* data;
+    size_type len;
 };
 
 std::ostream& operator<<(std::ostream&, const Str&);
