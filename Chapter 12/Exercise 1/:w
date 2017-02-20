@@ -35,7 +35,7 @@ public:
         create();
         std::copy(cp, cp + std::strlen(cp), std::back_inserter(*this));
     }
-   
+
     /* From iterators */
     Str(const_iterator b, const_iterator e) { create(b,e); }
 
@@ -63,32 +63,23 @@ public:
     size_type size() const { return avail - head; }
     void clear() { uncreate(); }
 
-    reference c_str() { 
-        create_ref(ref_head, ref_avail);
-        return *ref_head;
-    }
-
-    reference data() {
-        create_ref(ref_head, ref_avail);
-        return *ref_head;
-    }
+    const_reference c_str() const { create(head, avail, c_str_); }
+    const_reference ata() const { return head; }
 
 private:
     iterator head;
     iterator avail;
     iterator limit;
 
-    iterator ref_head;
-    iterator ref_avail;
+    iterator data_fct
+    iterator c_str_fct
 
     std::allocator<char> alloc;
 
     void create();
     void create(const_iterator, const_iterator);
-    void create_ref(iterator, iterator);
-    
+
     void uncreate();
-    void uncreate_ref(iterator, iterator);
 
     void grow();
     void unchecked_append(const char&);
@@ -103,58 +94,46 @@ void Str::create()
 void Str::create(const_iterator i, const_iterator j)
 {
     std::cout << "CALLED: CREATE OBJ (by iterator)" << std::endl;
-    head = alloc.allocate(j - i);
-    limit = avail = std::uninitialized_copy(i, j, head);
+    data = alloc.allocate(j - i);
+    limit = avail = std::uninitialized_copy(i, j, data);
 }
 
-void Str::create_ref(iterator new_head, iterator new_avail)
+void Str:create(const_iterator i, const_iterator j, iterator b)
 {
     std::cout << "CALLED: CREATE OBJ (iter to new loc)" << std::endl;
-    new_head = alloc.allocate(head - avail);
-    new_avail = std::uninitialized_copy(head, avail, new_head);
+    b = alloc.allocate(j - i);
+    std::uninitalized_copy(i, j, b);
 }
 
 void Str::uncreate()
 {
     std::cout << "CALLED: UNCREATE OBJ" << std::endl;
-    if (head) {
+    if (data) {
         iterator it = avail;
-        while (it != head)
+        while (it != data)
             alloc.destroy(--it);
 
-        alloc.deallocate(head, limit - head);
+        alloc.deallocate(data, limit - data);
     }
-    head = limit = avail = 0;
-}
-
-void Str::uncreate_ref(iterator old_head, iterator old_avail)
-{
-    std::cout << "CALLED: UNCREATE OBJ (by pointer)" << std::endl;
-    if (old_head) {
-        iterator it = old_avail;
-        while (it != old_head)
-            alloc.destroy(--it);
-        alloc.deallocate(old_head, old_avail - old_head);
-    }
-    old_head = old_avail = 0;
+    data = limit = avail = 0;
 }
 
 void Str::grow()
 {
     std::cout << "CALLED: GROW OBJ ";
-    size_type new_size = std::max(2 * (limit - head), ptrdiff_t(1));
-    std::cout << "(NEW SIZE: " << new_size << ")" << std::endl;
-    iterator new_head = alloc.allocate(new_size);
-    iterator new_avail = std::uninitialized_copy(head, avail, new_head);
+    size_type new_size = std::max(2 * (limit - data), ptrdiff_t(1));
+    std::cout << "(NEW SIZE: " << new_size << ")" << std::endl;;
+    iterator new_data = alloc.allocate(new_size);
+    iterator new_avail = std::uninitialized_copy(data, avail, new_data);
 
     uncreate();
 
-    head = new_head;
-    std::cout << "NEW_DATA: " << head;
+    data = new_data;
+    std::cout << "NEW_DATA: " << data;
     avail = new_avail;
-    std::cout << ", NEW_AVAIL: " << avail - head; 
-    limit = head + new_size;
-    std::cout << ", NEW_LIMIT: " << limit - head << std::endl;
+    std::cout << ", NEW_AVAIL: " << avail - data; 
+    limit = data + new_size;
+    std::cout << ", NEW_LIMIT: " << limit - data << std::endl;
 }
 
 void Str::unchecked_append(const char& c)
