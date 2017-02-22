@@ -36,6 +36,8 @@ public:
     const char& operator[](size_type i) const { return data[i]; }
     size_type size() const { return data.size(); }
 
+    
+
 private:
     Vec<char> data;
 };

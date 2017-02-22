@@ -63,14 +63,19 @@ public:
     size_type size() const { return avail - head; }
     void clear() { uncreate(); }
 
-    reference c_str() { 
+    iterator c_str() {
+        std::cout << "CALLED: C_STR" << std::endl;
+        uncreate_ref(ref_head, ref_avail);
         create_ref(ref_head, ref_avail);
-        return *ref_head;
+        *ref_avail = '\0';
+        return ref_head;
     }
 
-    reference data() {
+    iterator data() {
+        std::cout << "CALLED: DATA" << std::endl;
+        uncreate_ref(ref_head, ref_avail);
         create_ref(ref_head, ref_avail);
-        return *ref_head;
+        return ref_head;
     }
 
 private:
@@ -85,10 +90,10 @@ private:
 
     void create();
     void create(const_iterator, const_iterator);
-    void create_ref(iterator, iterator);
+    void create_ref(iterator&, iterator&);
     
     void uncreate();
-    void uncreate_ref(iterator, iterator);
+    void uncreate_ref(iterator&, iterator&);
 
     void grow();
     void unchecked_append(const char&);
@@ -98,6 +103,7 @@ void Str::create()
 {
     std::cout << "CALLED: CREATE OBJ (default)" << std::endl;
     head = avail = limit = 0;
+    ref_head = ref_avail = 0;
 }
 
 void Str::create(const_iterator i, const_iterator j)
@@ -105,12 +111,13 @@ void Str::create(const_iterator i, const_iterator j)
     std::cout << "CALLED: CREATE OBJ (by iterator)" << std::endl;
     head = alloc.allocate(j - i);
     limit = avail = std::uninitialized_copy(i, j, head);
+    ref_head = ref_avail = 0;
 }
 
-void Str::create_ref(iterator new_head, iterator new_avail)
+void Str::create_ref(iterator& new_head, iterator& new_avail)
 {
-    std::cout << "CALLED: CREATE OBJ (iter to new loc)" << std::endl;
-    new_head = alloc.allocate(head - avail);
+    std::cout << "CALLED: CREATE_REF OBJ" << std::endl;
+    new_head = alloc.allocate(avail - head);
     new_avail = std::uninitialized_copy(head, avail, new_head);
 }
 
@@ -127,9 +134,9 @@ void Str::uncreate()
     head = limit = avail = 0;
 }
 
-void Str::uncreate_ref(iterator old_head, iterator old_avail)
+void Str::uncreate_ref(iterator& old_head, iterator& old_avail)
 {
-    std::cout << "CALLED: UNCREATE OBJ (by pointer)" << std::endl;
+    std::cout << "CALLED: UNCREATE_REF OBJ (by pointer)" << std::endl;
     if (old_head) {
         iterator it = old_avail;
         while (it != old_head)
