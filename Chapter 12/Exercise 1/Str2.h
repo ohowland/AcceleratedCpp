@@ -10,14 +10,7 @@
 
 class Str {
 
-friend std::istream& operator>>(std::istream&, Str&);
-
 public:
-    Str& operator+=(const Str& s) {
-        std::copy(s.begin(), s.end(), std::back_inserter(*this));
-        return *this;
-    }
-    
     typedef char* iterator;
     typedef const char* const_iterator;
     typedef size_t size_type;
@@ -27,24 +20,10 @@ public:
     typedef const char& const_reference;
 
     /* Constructors */
-    /* Default */
-    Str() { create(); } 
-
-    /* From null terminated String */
-    Str(const char* cp) {
-        create();
-        std::copy(cp, cp + std::strlen(cp), std::back_inserter(*this));
-    }
-   
-    /* From iterators */
-    Str(const_iterator b, const_iterator e) { create(b,e); }
-
-    void push_back(const char& c) {
-        std::cout << "CALLED: PUSH BACK" << std::endl;; 
-        /* TODO
-        grow();
-        unchecked_append(c); */
-    }
+    Str() { create(0, '\0'); } 
+    Str(size_type n, char c) { create(n, c); }
+    Str(const char* cp) { create(cp, cp + strlen(cp)); }
+    template <class In> Str(In i, In j) { create(i, j); }
 
     /* Copy Constructor */
     Str(const Str& a) { create(a.begin(), a.end()); }
@@ -58,10 +37,13 @@ public:
     iterator end() { return data_ + len_ - 1; }
     const_iterator end() const { return data_ + len_ - 1; }
 
-    reference operator[](size_type i) { return *(data_ + i); }
-    const_reference operator[](size_type i) const { return *(data_ + i); }
-    size_type size() const { return len; }
-    void clear() { uncreate(); }
+    reference operator[](size_type i) { return data_[i]; }
+    const_reference operator[](size_type i) const { return data_[i]; }
+
+    size_type size() const { return len_ - 1; }
+
+    Str& operator+=(const Str&);
+    template <class In> void insert(iterator, In, In);
 
 private:
     size_type len_;
@@ -71,82 +53,65 @@ private:
 
     void create(size_type, char);
     template <class In> void create(In, In);
-    
     void uncreate();
 
-    void grow();
+    void grow(size_type);
 };
 
-void Str::create(size_type l, char c))
+template <class In> void Str::insert(iterator p, In i, In j) {
+    size_type new_len = len_ + (j - i);
+    iterator new_data = alloc.allocate(new_len);
+    uninitialized_copy(data_, p, new_data);
+    uninitialized_copy(i, j, new_data + (p - data_));
+uninitialized_copy
+
+void Str::create(size_type l, char c)
 {
     std::cout << "CALLED: CREATE OBJ (default)" << std::endl;
-    len_ = l
-
+    len_ = l + 1;
+    data_ = alloc.allocate(len_);
+    std::uninitialized_fill(data_, data_ + len_ - 1, c);
+    alloc.construct(data_ + len_ - 1, '\0');
 }
 
-void Str::create(const_iterator i, const_iterator j)
+template <class In>
+void Str::create(In i, In j)
 {
     std::cout << "CALLED: CREATE OBJ (by iterator)" << std::endl;
-    data_ = alloc.allocate(j - i);
+    len_ = j - i + 1;
+    data_ = alloc.allocate(len_);
     std::uninitialized_copy(i, j, data_);
-}
-
-void Str::create_ref(iterator& new_head, iterator& new_avail)
-{
-    std::cout << "CALLED: CREATE_REF OBJ" << std::endl;
-    new_head = alloc.allocate(avail - head);
-    new_avail = std::uninitialized_copy(head, avail, new_head);
+    alloc.construct(data_ + len_ - 1, '\0');
 }
 
 void Str::uncreate()
 {
     std::cout << "CALLED: UNCREATE OBJ" << std::endl;
-    if (head) {
-        iterator it = avail;
-        while (it != head)
+    if (data_) {
+        iterator it = data_ + len_;
+        while (it != data_)
             alloc.destroy(--it);
-
-        alloc.deallocate(head, limit - head);
+        alloc.deallocate(data_, len_);
     }
-    head = limit = avail = 0;
-}
-
-void Str::uncreate_ref(iterator& old_head, iterator& old_avail)
-{
-    std::cout << "CALLED: UNCREATE_REF OBJ (by pointer)" << std::endl;
-    if (old_head) {
-        iterator it = old_avail;
-        while (it != old_head)
-            alloc.destroy(--it);
-        alloc.deallocate(old_head, old_avail - old_head);
-    }
-    old_head = old_avail = 0;
+    
+    data_ = nullptr;
+    len_ = 0;
 }
 
 void Str::grow()
 {
     std::cout << "CALLED: GROW OBJ ";
-    size_type new_size = std::max(2 * (limit - head), ptrdiff_t(1));
-    std::cout << "(NEW SIZE: " << new_size << ")" << std::endl;
-    iterator new_head = alloc.allocate(new_size);
-    iterator new_avail = std::uninitialized_copy(head, avail, new_head);
+    size_type new_len = std::max(2 * len_, size_t(1));
+    std::cout << "(NEW SIZE: " << new_len << ")" << std::endl;
+    iterator new_data = alloc.allocate(new_len);
+    std::uninitialized_copy(data_, data_ + len_ - 1, new_data);
 
     uncreate();
 
-    head = new_head;
-    std::cout << "NEW_DATA: " << head;
-    avail = new_avail;
-    std::cout << ", NEW_AVAIL: " << avail - head; 
-    limit = head + new_size;
-    std::cout << ", NEW_LIMIT: " << limit - head << std::endl;
-}
-
-void Str::unchecked_append(const char& c)
-{
-    std::cout << "CALLED: UNCHECKED APPEND";
-    std::cout << " (CHAR: " << c << ", AVAIL: " << avail
-              << ")" << std::endl;
-    alloc.construct(avail++, c);
+    data_ = new_data;
+    std::cout << "DATA_: " << data_;
+    len_ = new_len;
+    std::cout << ", LEN_: " << len_ << std::endl;
 }
 
 Str& Str::operator=(const Str& rhs)
