@@ -21,8 +21,12 @@ public:
 	
 	Vec() { create(); } // constructor T::T()
 	explicit Vec(std::size_t n, const T& t = T()) { create(n, t); }
+
+    /* --------------- 12.10 --------------- */ 
+    template <class In> Vec(In b, In e) { create(b, e); }
+
 	Vec(const Vec& v) { create(v.begin(), v.end()); } // copy constructor T::T(const T&)
-	Vec& operator=(const Vec&); // assignment operator T::operator=(const T&)
+    Vec& operator=(const Vec&); // assignment operator T::operator=(const T&)
 	~Vec() { uncreate(); } // destructor T::~T(V)
 	
 	T& operator[] (size_type i) { return data[i]; }

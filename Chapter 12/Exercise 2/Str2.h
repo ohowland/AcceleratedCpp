@@ -44,7 +44,19 @@ public:
     size_type size() const { return len_ - 1; }
 
     Str& operator+=(const Str&);
+    Str& operator+=(const_iterator);
+
     template <class In> void insert(iterator, In, In);
+
+    const char* c_str() const {
+        std::cout << "CALLED: C_STR" << std::endl;
+        return data_;
+    }
+    
+    const char* data() const {
+        std::cout << "CALLED: DATA" << std::endl;
+        return data_;
+    }
 
 private:
     size_type len_;
@@ -120,8 +132,11 @@ Str& Str::operator+=(const Str& s)
     return *this;
 }
 
-std::ostream& operator<<(std::ostream&, const Str&);
-Str operator+(const Str&, const Str&);
+Str& Str::operator+=(const_iterator c)
+{
+    Str::insert(this->end(), c, c+1);
+    return *this;
+}
 
 std::ostream& operator<<(std::ostream& os, const Str& s)
 {
@@ -131,16 +146,19 @@ std::ostream& operator<<(std::ostream& os, const Str& s)
     return os;
 }
 
-/* std::istream& operator>>(std::istream& is, Str& s)
+ std::istream& operator>>(std::istream& is, Str& s)
 {
     std::cout << "CALLED: IN STREAM" << std::endl;
     
     // read and discard leading whitespace
     Str::value_type c;
+    Str::const_iterator tmp;
+
     is.get(c)
         ;
     if (is) {
-        do s.push_back(c);
+        tmp = &c;
+        do (s+=tmp);
         while (is.get(c) && !isspace(c)); 
         // if whitespace is read, put it back on the stream.
         if (is)
@@ -148,8 +166,7 @@ std::ostream& operator<<(std::ostream& os, const Str& s)
     }
 
     return is;
-} */
-
+} 
 
 Str operator+(const Str& s, const Str& t)
 {
@@ -158,5 +175,10 @@ Str operator+(const Str& s, const Str& t)
     r += t;
     return r;
 }
+
+Str operator==(const Str& s, const Str& t);
+Str operator!=(const Str& s, const Str& t);
+Str operator>(const Str& s, const Str& t);
+Str operator<(const Str& s, const Str& t);
 
 #endif
