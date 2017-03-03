@@ -65,6 +65,9 @@ public:
     iterator end() { return data_ + len_ - 1; }
     const_iterator end() const { return data_ + len_ - 1; }
 
+/* --------------- 12.11 --------------- */
+    Str substr(size_type, size_type) const;
+
 /* --------------- 12.12 --------------- */
     template <class In> void insert(iterator, In, In);
     
@@ -227,6 +230,11 @@ void Str::create(In i, In j)
     data_ = alloc.allocate(len_);
     std::uninitialized_copy(i, j, data_);
     alloc.construct(data_ + len_ - 1, '\0');
+}
+
+/* -------------- 12.12 --------------- */ 
+Str Str::substr(size_type pos, size_type len) const {
+    return Str(data_ + pos, data_ + pos + len);
 }
 
 /* -------------- 12.12 --------------- */ 
