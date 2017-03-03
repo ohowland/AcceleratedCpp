@@ -1,6 +1,6 @@
 #include <iostream>
-#include "split.h"
 #include <vector>
+#include "split.h"
 #include "Str.hpp"
 
 using std::vector;
@@ -15,10 +15,10 @@ int main()
 	while (getline(cin, s)) {
 
     vector<Str> v = split(s);
-/*
-		for (Vec<Str>::size_type i = 0; i != v.size(); ++i)
+
+		for (vector<Str>::size_type i = 0; i != v.size(); ++i)
 			cout << v[i] << endl;
-*/
     }
+ 
 	return 0;
 }

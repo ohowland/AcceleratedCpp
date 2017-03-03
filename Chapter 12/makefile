@@ -1,14 +1,20 @@
 CC = g++
 CFLAGS = -Wall -c
 
-main : main_split.o  
-	$(CC) -Wall main_split.o -o main 
+main : main_frame.o frame.o split.o width.o Str.o 
+	$(CC) -Wall main_frame.o frame.o split.o width.o Str.o -o main 
 
-main_split.o : split.o
-	$(CC) $(CFLAGS) main_split.cpp
+main_frame.o : frame.o Str.o
+	$(CC) $(CFLAGS) main_frame.cpp
 
-split.o : split.cpp Vec.hpp Str.hpp
-	$(CC) $(CFLAGS) split.cpp
+frame.o : width.o Str.o
+	$(CC) $(CFLAGS) frame.cpp
+
+width.o : Str.o
+	$(CC) $(CFLAGS) width.cpp 
+
+Str.o :
+	$(CC) $(CFLAGS) Str.cpp
 
 clobber:
 	rm -f *.o core *.exe main 
