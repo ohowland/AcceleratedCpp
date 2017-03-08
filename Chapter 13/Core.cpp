@@ -23,11 +23,24 @@ istream& Core::read(istream& in)
     return in;
 }
 
+istream& Core::read_hw(istream& in, vector<double> hw)
+{
+    if (in) {
+        hw.clear();
+        double x;
+        while (in >> x)
+            hw.push_back(x);
+        in.clear();
+    }
+    return in;
+}
+
 bool compare(const Core& c1, const Core& c2)
 {
     return c1.name() < c2.name();
 }
 
+/* UNUSED:
 bool compare_Core_ptrs(const Core* cp1, const Core* cp2)
 {
     return compare(*cp1, *cp2);
@@ -36,7 +49,7 @@ bool compare_Core_ptrs(const Core* cp1, const Core* cp2)
 bool compare_grades(const Core& c1, const Core& c2)
 {
     return c1.grade() < c2.grade();
-}
+}*/
 
 /*---------------GRAD---------------*/ 
 double Grad::grade() const

@@ -21,6 +21,8 @@ protected:
     std::istream& read_common(std::istream&);
     double midterm, final;
     std::vector<double> homework;
+    
+    std::istream& read_hw(std::istream&, std::vector<double>);
 private:
     std::string n;
 };
@@ -45,7 +47,7 @@ std::istream& Core::read_common(std::istream& in)
 }
 
 bool compare(const Core&, const Core&);
-bool compare_Core_ptrs(const Core*, const Core*);
-bool compare_grades(const Core&, const Core&);
+// bool compare_Core_ptrs(const Core*, const Core*);
+// bool compare_grades(const Core&, const Core&);
 
 #endif
