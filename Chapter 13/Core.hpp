@@ -17,7 +17,9 @@ public:
     virtual ~Core() { } 
 
     std::string name() const;
-    
+    bool valid() const { return !homework.empty(); }
+    std::string letter_grade(const double&);
+
     virtual std::istream& read(std::istream&);
     virtual double grade() const;
 

@@ -16,6 +16,12 @@ ex132 : ex13-2.o Core.o grade.o median.o
 ex13-2.o : Core.o
 	$(CC) $(CFLAGS) ex13-2.cpp
 
+ex133 : ex13-3.o Student_info.o Core.o grade.o median.o
+	$(CC) -Wall ex13-3.o Student_info.o Core.o grade.o median.o -o ex133 
+
+ex13-3.o: Student_info.o
+	$(CC) $(CFLAGS) ex13-3.cpp
+
 main_core.o : Student_info.o 
 	$(CC) $(CFLAGS) main_core.cpp
 

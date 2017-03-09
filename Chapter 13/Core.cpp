@@ -21,6 +21,13 @@ double Core::grade() const
     return ::grade(midterm, final, homework);
 }
 
+string Core::letter_grade(const double&)
+{
+    static const double numbers[] = {
+        97, 94, 90, 87, 84, 80, 77
+    };
+}
+
 std::istream& Core::read_common(std::istream& in)
 {
     std::cerr << "Core::read_common()" << std::endl; 

@@ -20,6 +20,12 @@ public:
         if (cp) return cp->name();
         else throw std::runtime_error("uninitialized Student");
     }
+
+    bool valid() const {
+        if (cp) return cp->valid();
+        else throw std::runtime_error("homework vector empty");
+    }
+
     double grade() const {
         if (cp) return cp->grade();
         else throw std::runtime_error("uninitialized Student");
