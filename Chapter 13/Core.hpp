@@ -20,10 +20,11 @@ public:
 
     std::string name() const;
     bool valid() const { return !homework.empty(); }
-
+    
     virtual std::istream& read(std::istream&);
     virtual double grade() const;
     virtual std::string letter_grade();
+    virtual bool met_requirements() const;
 
 protected:
     virtual Core* clone() const { return new Core(*this); }
@@ -48,6 +49,7 @@ public:
     
     double grade() const;
     std::istream& read(std::istream&);
+    bool met_requirements() const;
 
 protected:
     Grad* clone() const { return new Grad (*this); }
@@ -72,6 +74,16 @@ public:
 
 protected:
     Pass* clone() const { return new Pass (*this); }
+};
+
+class Audit: public Core {
+public:
+    Audit() { }
+    Audit(std::istream& is) { read(is) };
+   
+    std::string letter_grade();
+protected:
+    Audit* clone() const { return new Audit (*this); }
 };
 
 bool compare(const Core&, const Core&);

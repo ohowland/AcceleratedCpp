@@ -12,6 +12,8 @@ std::istream& Student_info::read(std::istream& is)
         cp = new Core(is);
     } else if (ch == 'P') {
         cp = new Pass(is);
+    } else if (ch == 'A') {
+        cp = new Audit(is);
     } else {
         cp = new Grad(is);
     }

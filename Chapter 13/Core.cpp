@@ -84,6 +84,11 @@ istream& Core::read(istream& in)
     return in;
 }
 
+bool Core::met_requirements() const
+{
+    return !homework.empty();
+}
+
 /*---------------GRAD---------------*/ 
 double Grad::grade() const
 {
@@ -98,6 +103,11 @@ istream& Grad::read(istream& in)
     in >> thesis;
     read_hw(in, Core::homework);
     return in;
+}
+
+bool Grad::met_requirements() const
+{
+    return Core::met_requirements() && thesis != 0;
 }
 
 /*---------------PASS---------------*/ 
@@ -125,3 +135,11 @@ std::string Pass::letter_grade()
 {
     return fail(grade()) ? "FAIL" : "PASS";
 }
+
+/*---------------AUDIT---------------*/
+
+std::string Audit::letter_grade()
+{
+    return "AUDIT";
+}
+
