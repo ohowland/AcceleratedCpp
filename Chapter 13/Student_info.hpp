@@ -23,11 +23,16 @@ public:
 
     bool valid() const {
         if (cp) return cp->valid();
-        else throw std::runtime_error("homework vector empty");
+        else throw std::runtime_error("uninitialized Student");
     }
 
     double grade() const {
         if (cp) return cp->grade();
+        else throw std::runtime_error("uninitialized Student");
+    }
+
+    std::string letter_grade() const {
+        if (cp) return cp->letter_grade();
         else throw std::runtime_error("uninitialized Student");
     }
 

@@ -5,6 +5,11 @@
 
 using std::domain_error;	using std::vector;
 
+double grade(double midterm, double final)
+{
+    return 0.5 * midterm + 0.5 * final;
+}
+
 double grade(double midterm, double final, double homework)
 {
 	return 0.2 * midterm + 0.4 * final + 0.4 * homework;

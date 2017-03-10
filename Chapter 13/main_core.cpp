@@ -26,9 +26,11 @@ int main()
              << string(maxlen + 1 - students[i].name().size(), ' ');
         try {
             double final_grade = students[i].grade();
+            string final_letter_grade = students[i].letter_grade();
             streamsize prec = cout.precision();
             cout << setprecision(3) << final_grade
-                 << setprecision(prec) << endl;
+                 << setprecision(prec) << " ("
+                 << final_letter_grade << ")" << endl;
         } catch (domain_error e) {
             cout << e.what() << endl;
         }

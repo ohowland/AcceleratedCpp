@@ -38,4 +38,4 @@ median.o :
 	$(CC) $(CFLAGS) median.cpp
 
 clobber:
-	rm -f *.o core *.exe main 
+	rm -f *.o core *.exe main ex131 ex132 ex133

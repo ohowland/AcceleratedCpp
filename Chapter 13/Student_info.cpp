@@ -10,6 +10,8 @@ std::istream& Student_info::read(std::istream& is)
     is >> ch;
     if (ch == 'U') {
         cp = new Core(is);
+    } else if (ch == 'P') {
+        cp = new Pass(is);
     } else {
         cp = new Grad(is);
     }

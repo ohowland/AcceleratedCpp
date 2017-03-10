@@ -8,9 +8,11 @@
 class Core {
     friend class Student_info;
 public:
-    Core(): midterm(0), final(0) { std::cerr << "Core::Core()" << std::endl;  }
+    Core(): midterm(0), final(0) {
+        //std::cerr << "Core::Core()" << std::endl;
+        }
     Core(std::istream& is) { 
-        std::cerr << "Core::Core(istream&)" << std::endl;
+        //std::cerr << "Core::Core(istream&)" << std::endl;
         read(is);
     }
 
@@ -18,10 +20,10 @@ public:
 
     std::string name() const;
     bool valid() const { return !homework.empty(); }
-    std::string letter_grade(const double&);
 
     virtual std::istream& read(std::istream&);
     virtual double grade() const;
+    virtual std::string letter_grade();
 
 protected:
     virtual Core* clone() const { return new Core(*this); }
@@ -36,9 +38,11 @@ private:
 
 class Grad: public Core {
 public:
-    Grad(): thesis(0) { std::cerr << "Grad::Grad()" << std::endl; }
+    Grad(): thesis(0) {
+        //std::cerr << "Grad::Grad()" << std::endl;
+        }
     Grad(std::istream& is) { 
-        std::cerr << "Grad::Grad(istream&)" << std::endl;
+        //std::cerr << "Grad::Grad(istream&)" << std::endl;
         read(is);
     }
     
@@ -52,8 +56,26 @@ private:
     double thesis;
 };
 
+class Pass: public Core {
+public:
+    Pass() {
+        //std::cerr << "Pass:Pass()" << std::endl;
+        }
+    Pass(std::istream& is) {
+        //std::cerr << "Pass:Pass(istream&)" << std::endl;
+        read(is);
+    }
+    
+    double grade() const;
+    std::istream& read(std::istream&);
+    std::string letter_grade();
+
+protected:
+    Pass* clone() const { return new Pass (*this); }
+};
+
 bool compare(const Core&, const Core&);
-// bool compare_Core_ptrs(const Core*, const Core*);
-// bool compare_grades(const Core&, const Core&);
+bool fail(const double&);
+std::string letter_grade_conv(const double&);
 
 #endif
