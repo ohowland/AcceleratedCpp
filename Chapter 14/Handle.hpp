@@ -1,6 +1,8 @@
 #ifndef GUARD_HANDLE_HPP
 #define GUARD_HANDLE_HPP
 
+#include "Core.hpp"
+
 template <class T> class Handle {
 public:
     Handle(): p(0) { }
@@ -17,5 +19,9 @@ public:
 private:
     T* p;
 };
+
+template <class T>
+bool compare_Core_handles(const Handle<T>&, const Handle<T>&);
+
 
 #endif
