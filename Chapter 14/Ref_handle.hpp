@@ -1,7 +1,7 @@
 #ifndef GUARD_REF_HANDLE_HPP_
 #define GUARD_REF_HANDLE_HPP_
 
-#include <ctypes>
+#include <stddef.h>
 #include <stdexcept>
 
 template <class T> class Ref_handle {
@@ -25,7 +25,7 @@ public:
     T* operator->() const {
         if (p)
             return p;
-        throw std::runtime_error("unbound Ref_hadnle");
+        throw std::runtime_error("unbound Ref_handle");
     }
 
 private:

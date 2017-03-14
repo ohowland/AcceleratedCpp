@@ -1,3 +1,5 @@
+#include "Ref_handle.hpp"
+    
 template <class T>
 Ref_handle<T>& Ref_handle<T>::operator=(const Ref_handle& rhs)
 {
