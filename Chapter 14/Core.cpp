@@ -16,6 +16,11 @@ bool compare(const Core& c1, const Core& c2)
     return c1.name() < c2.name();
 }
 
+bool compare_Core_ptrs(const Core* cp1, const Core* cp2)
+{
+    return compare(*cp1, *cp2);
+}
+
 bool fail(const double& grade)
 {
     return grade < 60;

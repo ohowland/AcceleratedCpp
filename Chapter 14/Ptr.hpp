@@ -1,7 +1,8 @@
 #ifndef GUARD_PTR_HPP_
 #define GUARD_PTR_HPP_
 
-#include <stddef.h>
+#include <cstddef>
+#include <stdexcept>
 
 template <class T> class Ptr {
 public:
@@ -29,6 +30,43 @@ private:
     size_t* refptr;
 };
 
-template <class T> T* clone(const T*);
+template <class T> T* clone(const T* tp) {
+    return tp->clone();
+}
+
+template <class T> Ptr<T>& Ptr<T>::operator=(const Ptr& rhs)
+{
+    ++*rhs.refptr;
+    if (--*refptr == 0) {
+        delete refptr;
+        delete p;
+    }
+
+    refptr = rhs.refptr;
+    p = rhs.p;
+    return *this;
+}
+
+template <class T> Ptr<T>::~Ptr()
+{
+    if (--*refptr == 0) {
+        delete refptr;
+        delete p;
+    }
+}
+
+template <class T> T& Ptr<T>::operator*() const
+{
+    if (p)
+        return *p;
+    throw std::runtime_error("unbound Handle");
+}
+
+template <class T> T* Ptr<T>::operator->() const
+{
+    if (p)
+        return p;
+    throw std::runtime_error("unbound Handle");
+}
 
 #endif

@@ -1,7 +1,7 @@
 #ifndef GUARD_HANDLE_HPP
 #define GUARD_HANDLE_HPP
 
-#include "Core.hpp"
+#include <stdexcept>
 
 template <class T> class Handle {
 public:
@@ -20,8 +20,28 @@ private:
     T* p;
 };
 
-template <class T>
-bool compare_Core_handles(const Handle<T>&, const Handle<T>&);
+template <class T> Handle<T>& Handle<T>::operator=(const Handle& rhs)
+{
+    if (&rhs != this) {
+        delete p;
+        p = rhs.p ? rhs.p->clone() : 0;
+    }
+    return *this;
+}
+
+template <class T> T& Handle<T>::operator*() const
+{
+    if (p)
+        return *p;
+    throw std::runtime_error("unbound Handle");
+}
+
+template <class T> T* Handle<T>::operator->() const
+{
+    if (p)
+        return p;
+    throw std::runtime_error("unbound Handle");
+}
 
 
 #endif

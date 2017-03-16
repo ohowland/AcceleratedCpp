@@ -6,7 +6,7 @@
 #include <vector>
 
 class Core {
-    friend class Handle;
+
 public:
     Core(): midterm(0), final(0) {
         //std::cerr << "Core::Core()" << std::endl;
@@ -25,9 +25,10 @@ public:
     virtual double grade() const;
     virtual std::string letter_grade();
     virtual bool met_requirements() const;
+    
+    virtual Core* clone() const { return new Core(*this); }
 
 protected:
-    virtual Core* clone() const { return new Core(*this); }
     std::istream& read_common(std::istream&);
     double midterm, final;
     std::vector<double> homework;
@@ -35,6 +36,7 @@ protected:
 
 private:
     std::string n;
+    friend class Student_info;
 };
 
 class Grad: public Core {
@@ -79,7 +81,7 @@ protected:
 class Audit: public Core {
 public:
     Audit() { }
-    Audit(std::istream& is) { read(is) };
+    Audit(std::istream& is) { read(is); }
    
     std::string letter_grade();
 protected:
@@ -87,6 +89,7 @@ protected:
 };
 
 bool compare(const Core&, const Core&);
+bool compare_Core_ptrs(const Core*, const Core*);
 bool fail(const double&);
 std::string letter_grade_conv(const double&);
 

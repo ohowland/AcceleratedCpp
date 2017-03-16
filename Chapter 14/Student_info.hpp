@@ -4,8 +4,8 @@
 #include <string>
 #include <stdexcept>
 
-#include "Ptr.hpp"
 #include "Core.hpp"
+#include "Ptr.hpp"
 
 class Student_info {
 public:
@@ -25,24 +25,13 @@ public:
         if (cp) return cp->grade();
         else throw std::runtime_error("uninitalized Student");
     }
-
-    /* double regrade() const {
-        cp.make_unique();
-        
-        if (cp)
-            cp->regrade(final, thesis);
-        else throw std::runtime_error("regrade of unknown student");
-    } */
-
-    static bool compare(const Student_info& s1,
-                        const Student_info& s2) {
+   
+    static bool compare(const Student_info& s1, const Student_info& s2) {
         return s1.name() < s2.name();
     }
 
 private:
     Ptr<Core> cp;
 };
-
-
 
 #endif

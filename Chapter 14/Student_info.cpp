@@ -1,7 +1,7 @@
-#include "Student_info.hpp"
-
 #include <iostream>
 
+#include "Student_info.hpp"
+#include "Core.hpp"
 
 std::istream& Student_info::read(std::istream& is)
 {
