@@ -1,9 +1,9 @@
 #ifndef GUARD_split_h
 #define GUARD_split_h
 
-#include <vector>
+#include "Vec.hpp"
 #include "Str.hpp"
 
-std::vector<Str> split(const Str&);
+Vec<Str> split(const Str&);
 
 #endif

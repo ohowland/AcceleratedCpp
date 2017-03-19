@@ -3,6 +3,7 @@
 
 #include <cstddef>
 #include <stdexcept>
+#include "Vec.hpp"
 
 template <class T> class Ptr {
 public:
@@ -68,5 +69,13 @@ template <class T> T* Ptr<T>::operator->() const
         return p;
     throw std::runtime_error("unbound Handle");
 }
+
+/*
+template <>
+Vec<char>* clone(const Vec<char>* vp)
+{   
+    return new Vec<char>(*vp);
+}
+*/
 
 #endif

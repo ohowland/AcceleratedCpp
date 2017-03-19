@@ -58,6 +58,7 @@ public:
 
     void clear() { uncreate(); }
 
+
 private:
 	//implementation
 	iterator data; 	// first element in Vec
@@ -155,6 +156,12 @@ Vec<T>& Vec<T>::operator=(const Vec& rhs)
 		create(rhs.begin(), rhs.end());
 	}
 	return *this;
+}
+
+template <class T> 
+Vec<T>* clone(const Vec<T>* vp)
+{   
+    return new Vec<T>(*vp);
 }
 
 #endif

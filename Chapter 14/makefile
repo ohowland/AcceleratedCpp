@@ -10,6 +10,21 @@ mainr : main_ref.o Student_info.o Core.o grade.o median.o
 mainp : main_ptr.o Student_info.o Core.o grade.o median.o 
 	$(CC) -Wall main_ptr.o Student_info.o Core.o grade.o median.o -o mainp
 
+main_str : main_frame.o 
+	$(CC) -Wall main_frame.o Str.o frame.o width.o -o main_str
+
+main_frame.o : Str.o frame.o 
+	$(CC) $(CFLAGS) main_frame.cpp 
+
+frame.o : width.o
+	$(CC) $(CFLAGS) frame.cpp frame.h
+
+width.o :
+	$(CC) $(CFLAGS) width.cpp width.h
+
+Str.o :
+	$(CC) $(CFLAGS) Str.cpp
+
 main_ptr.o : Student_info.o Ptr.o 
 	$(CC) $(CFLAGS) main_ptr.cpp
 
