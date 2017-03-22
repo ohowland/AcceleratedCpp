@@ -70,12 +70,4 @@ template <class T> T* Ptr<T>::operator->() const
     throw std::runtime_error("unbound Handle");
 }
 
-/*
-template <>
-vector<char>* clone(const vector<char>* vp)
-{   
-    return new vector<char>(*vp);
-}
-*/
-
 #endif
